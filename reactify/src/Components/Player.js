@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 
 import Song from "./Song";
 import PropTypes from "prop-types";
+import { Button } from "reactstrap";
 
 class Player extends Component {
   render() {
     const {currentSong, playNext, playPrevious} = this.props;
 
     return <span>
-          <button onClick={playPrevious}>Previous</button>
+          <Button onClick={playPrevious}>&lt;-</Button>
       <audio controls key={currentSong.fileName}>
       <source src={`/resources/${currentSong.fileName}`} type="audio/mpeg"/>
       Your browser does not support the audio tag.
     </audio>
-      <button onClick={playNext}>Next</button>
+      <Button onClick={playNext}>-&gt;</Button>
     </span>;
   }
 }
