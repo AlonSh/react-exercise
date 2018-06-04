@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container } from "reactstrap";
+import {Nav, Navbar, NavbarBrand, NavItem, NavLink} from "reactstrap";
 import Library from "./Library";
 import Player from "./Player";
 
@@ -44,11 +44,22 @@ class Layout extends Component {
   };
 
   render() {
-    return <Container>
+    return <div>
+      <Navbar color="light" light expand="md">
+        <NavbarBrand href="/">Reactify</NavbarBrand>
+        <Nav navbar>
+          <NavItem>
+            <NavLink href="">Library</NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink href="">Playlists</NavLink>
+          </NavItem>
+        </Nav>
+      </Navbar>
       <Library songs={this.state.songs} chooseSong={this.chooseSong}/>
       <Player currentSong={this.state.songs[this.state.songIndex]} playNext={this.nextSong}
               playPrevious={this.previousSong}/>
-    </Container>;
+    </div>;
   }
 }
 
