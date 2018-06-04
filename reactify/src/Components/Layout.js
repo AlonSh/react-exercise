@@ -1,10 +1,12 @@
-
-
 import React, { Component } from 'react';
+import { Container } from "reactstrap";
 
 class Layout extends Component {
   render() {
-    return "Text";
+    return <Container>
+      <Library/>
+      <Player/>
+    </Container>;
   }
 }
 
