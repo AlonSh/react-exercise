@@ -5,57 +5,45 @@ import Playlist from "./Playlist";
 import {Switch} from "react-router";
 import {Redirect, Route, Router} from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
+import {connect} from "react-redux";
+import {selectPlaylist} from "../actions/playlistActions";
 
 const history = createHistory();
 
 
 class Layout extends Component {
+
     constructor(props) {
         super(props);
-        this.state = {
-            playlists: [
-                {
-                    name: "Library",
-                    songs: [
-                        {artist: "Redbone", name: "Come and Get Your Love", fileName: "ComeAndGetYourLove.mp3"},
-                        {
-                            artist: "Marvin Gaye & Tammi Terrell",
-                            name: "Ain't no Mountain High Enough",
-                            fileName: "AintNoMountainHighEnough.mp3"
-                        },
-                    ]
-                },
-                {
-                    name: "My Playlist",
-                    songs: [
-                        {artist: "Redbone", name: "Come and Get Your Love", fileName: "ComeAndGetYourLove.mp3"},
-                        {
-                            artist: "Marvin Gaye & Tammi Terrell",
-                            name: "Ain't no Mountain High Enough",
-                            fileName: "AintNoMountainHighEnough.mp3"
-                        },
-                    ]
-                }
-            ],
-        };
+        const urlParts = history.location.pathname.split('/');
+        const currentPlaylist = urlParts[urlParts.length - 1] || 0;
+        this.props.selectPlaylist(currentPlaylist);
     }
 
     navigate = (url) => {
         history.push(url);
     };
 
+    goToLibrary = () => {
+        this.props.selectPlaylist(0);
+        this.navigate('/');
+    };
+
     choosePlaylist = (index) => {
+        this.props.selectPlaylist(index);
         history.push(`/playlists/${index}`);
     };
 
     render() {
+        const {playlists} = this.props;
+
         return <Router history={history}>
             <div>
                 <Navbar color="light" light expand="md">
-                    <NavbarBrand onClick={() => this.navigate('/')}>Reactify</NavbarBrand>
+                    <NavbarBrand onClick={this.goToLibrary}>Reactify</NavbarBrand>
                     <Nav navbar>
                         <NavItem>
-                            <NavLink onClick={() => this.navigate('/')}>Library</NavLink>
+                            <NavLink onClick={this.goToLibrary}>Library</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink onClick={() => this.navigate('/playlists')}>Playlists</NavLink>
@@ -63,17 +51,11 @@ class Layout extends Component {
                     </Nav>
                 </Navbar>
                 <Switch>
-                    <Route path="/" exact
-                           render={() => (
-                               <Playlist songs={this.state.playlists[0].songs} name={this.state.playlists[0].name}/>
-                           )}/>
+                    <Route path="/" exact component={Playlist}/>
                     <Route path="/playlists" exact render={() => (
-                        <Playlists playlists={this.state.playlists} choosePlaylist={this.choosePlaylist}/>)
+                        <Playlists playlists={playlists} choosePlaylist={this.choosePlaylist}/>)
                     }/>
-                    <Route path="/playlists/:index" render={({match}) => (
-                        <Playlist songs={this.state.playlists[match.params.index].songs}
-                                  name={this.state.playlists[match.params.index].name}/>
-                    )}/>
+                    <Route path="/playlists/:index" component={Playlist} />
                     <Redirect to="/"/>
                 </Switch>
             </div>
@@ -81,4 +63,8 @@ class Layout extends Component {
     }
 }
 
-export default Layout;
+export default connect((store) => ({
+    playlists: store.playlists,
+}), (dispatch) => ({
+    selectPlaylist: (index) => dispatch(selectPlaylist(index))
+}))(Layout);
