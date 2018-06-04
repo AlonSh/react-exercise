@@ -4,12 +4,13 @@ import PropTypes from "prop-types";
 
 class Playlist extends Component {
   render() {
-    const {songs, chooseSong} = this.props;
+    const {name, songs, chooseSong} = this.props;
 
     return <div>
+      <h2>{name}</h2>
       {songs.map((song, index) => (
-        <div onClick={() => chooseSong(index)}>
-          <Song artist={song.artist} name={song.name} key={index}/>
+        <div key={index} onClick={() => chooseSong(index)}>
+          <Song artist={song.artist} name={song.name}/>
         </div>
       ))}
     </div>;
@@ -17,9 +18,9 @@ class Playlist extends Component {
 }
 
 Playlist.propTypes = {
+  name: PropTypes.string.isRequired,
   songs: PropTypes.arrayOf(PropTypes.shape(Song.propTypes)),
   chooseSong: PropTypes.func,
-
 };
 
 export default Playlist;

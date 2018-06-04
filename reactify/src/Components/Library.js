@@ -6,7 +6,7 @@ import Song from "./Song";
 class Library extends Component {
   render() {
     const {songs, chooseSong} = this.props;
-    return <Playlist songs={songs} chooseSong={chooseSong}/>;
+    return <Playlist songs={songs} chooseSong={chooseSong} name="Library" />;
   }
 }
 
