@@ -1,49 +1,55 @@
 import React, {Component} from 'react';
 import {Nav, Navbar, NavbarBrand, NavItem, NavLink} from "reactstrap";
-import Library from "./Library";
 import Player from "./Player";
 import Playlists from "./Playlists";
+import Playlist from "./Playlist";
 
 
 class Layout extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            songs: [
-                {artist: "Redbone", name: "Come and Get Your Love", fileName: "ComeAndGetYourLove.mp3"},
-                {
-                    artist: "Marvin Gaye & Tammi Terrell",
-                    name: "Ain't no Mountain High Enough",
-                    fileName: "AintNoMountainHighEnough.mp3"
-                },
-            ],
             playlists: [
-                {name: "My Playlist", songs: [
-                    {artist: "Redbone", name: "Come and Get Your Love", fileName: "ComeAndGetYourLove.mp3"},
-                    {
-                        artist: "Marvin Gaye & Tammi Terrell",
-                        name: "Ain't no Mountain High Enough",
-                        fileName: "AintNoMountainHighEnough.mp3"
-                    },
-                ]}
+                {
+                    name: "Library",
+                    songs: [
+                        {artist: "Redbone", name: "Come and Get Your Love", fileName: "ComeAndGetYourLove.mp3"},
+                        {
+                            artist: "Marvin Gaye & Tammi Terrell",
+                            name: "Ain't no Mountain High Enough",
+                            fileName: "AintNoMountainHighEnough.mp3"
+                        },
+                    ]
+                },
+                {
+                    name: "My Playlist",
+                    songs: [
+                        {artist: "Redbone", name: "Come and Get Your Love", fileName: "ComeAndGetYourLove.mp3"},
+                        {
+                            artist: "Marvin Gaye & Tammi Terrell",
+                            name: "Ain't no Mountain High Enough",
+                            fileName: "AintNoMountainHighEnough.mp3"
+                        },
+                    ]
+                }
             ],
             songIndex: 0,
             view: "Library"
         };
-        this.state.activePlaylist = this.state.songs;
+        this.state.activePlaylist = this.state.playlists[0];
     }
 
     nextSong = () => {
-        const {songIndex, songs} = this.state;
-        let nextIndex = songIndex < songs.length - 1 ? songIndex + 1 : 0;
+        const {songIndex, activePlaylist} = this.state;
+        let nextIndex = songIndex < activePlaylist.songs.length - 1 ? songIndex + 1 : 0;
         this.setState({
             songIndex: nextIndex,
         })
     };
 
     previousSong = () => {
-        const {songIndex, songs} = this.state;
-        let previousIndex = songIndex > 0 ? songIndex - 1 : songs.length - 1;
+        const {songIndex, activePlaylist} = this.state;
+        let previousIndex = songIndex > 0 ? songIndex - 1 : activePlaylist.songs.length - 1;
 
         this.setState({
             songIndex: previousIndex,
@@ -53,7 +59,7 @@ class Layout extends Component {
     chooseSong = (songIndex) => {
         if (this.state.view === "Library") {
             this.setState({
-                activePlaylist: this.state.songs,
+                activePlaylist: this.state.playlists[0],
             })
         }
         this.setState({
@@ -63,7 +69,8 @@ class Layout extends Component {
 
     choosePlaylist = (playlistIndex) => {
         this.setState({
-            activePlaylist: this.state.playlists[playlistIndex].songs,
+            activePlaylist: this.state.playlists[playlistIndex],
+            view: "Playlist",
         }, () => {
             this.chooseSong(0)
         });
@@ -73,8 +80,12 @@ class Layout extends Component {
         switch (this.state.view) {
             case "Playlists":
                 return <Playlists playlists={this.state.playlists} choosePlaylist={this.choosePlaylist}/>;
+            case "Playlist":
+                return <Playlist songs={this.state.activePlaylist.songs} chooseSong={this.chooseSong}
+                                 name={this.state.activePlaylist.name}/>;
             default:
-                return <Library songs={this.state.songs} chooseSong={this.chooseSong}/>;
+                return <Playlist songs={this.state.playlists[0].songs} chooseSong={this.chooseSong}
+                                 name={this.state.playlists[0].name}/>;
         }
     };
 
@@ -96,7 +107,7 @@ class Layout extends Component {
                 </Nav>
             </Navbar>
             {this.getView()}
-            <Player currentSong={this.state.songs[this.state.songIndex]} playNext={this.nextSong}
+            <Player currentSong={this.state.activePlaylist.songs[this.state.songIndex]} playNext={this.nextSong}
                     playPrevious={this.previousSong}/>
         </div>;
     }
