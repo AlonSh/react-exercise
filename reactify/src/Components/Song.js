@@ -3,19 +3,18 @@ import PropTypes from 'prop-types';
 
 class Song extends Component {
   render() {
-    const {song} = this.props;
+    const {artist, name} = this.props;
 
     return <div>
-      {song.artist} - {song.name}
+      {artist} - {name}
     </div>;
   }
 }
 
 Song.propTypes = {
-  song: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    artist: PropTypes.string.isRequired
-  }),
+    artist: PropTypes.string.isRequired,
+    fileName: PropTypes.string,
 };
 
 export default Song;

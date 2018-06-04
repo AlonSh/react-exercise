@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import Playlist from "./Playlist";
+import PropTypes from "prop-types";
+import Song from "./Song";
 
 class Library extends Component {
   render() {
-    return <Playlist songs={
-      [
-        {artist: "Redbone", name: "Come and Get Your Love"},
-        {artist: "The Rolling Stones", name: "Gimme Shelter"},
-        {artist: "Red Hot Chili Peppers", name: "Californication"}
-      ]
-    }/>;
+    const {songs} = this.props;
+    return <Playlist songs={songs}/>;
   }
 }
+
+Library.propTypes = {
+  songs: PropTypes.arrayOf(PropTypes.shape(Song.propTypes)),
+};
+
 
 export default Library;

@@ -8,7 +8,7 @@ class Playlist extends Component {
 
     return <div>
       {songs.map((song, index) => (
-        <Song song={song} key={index}/>
+        <Song artist={song.artist} name={song.name} key={index}/>
       ))}
     </div>;
   }
