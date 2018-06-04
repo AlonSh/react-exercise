@@ -7,15 +7,15 @@ class Playlist extends Component {
     const { songs } = this.props;
 
     return <div>
-      {songs.map((song) => (
-        <Song song={song}/>
+      {songs.map((song, index) => (
+        <Song song={song} key={index}/>
       ))}
     </div>;
   }
 }
 
 Playlist.propTypes = {
-  songs: PropTypes.arrayOf(Song.propTypes),
+  songs: PropTypes.arrayOf(PropTypes.shape(Song.propTypes)),
 };
 
 export default Playlist;
