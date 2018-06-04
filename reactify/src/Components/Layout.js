@@ -40,32 +40,42 @@ class Layout extends Component {
         };
     }
 
+    navigate = (url) => {
+        history.push(url);
+    };
+
+    choosePlaylist = (index) => {
+        history.push(`/playlists/${index}`);
+    };
+
     render() {
         return <Router history={history}>
             <div>
-            <Navbar color="light" light expand="md">
-                <NavbarBrand href="/">Reactify</NavbarBrand>
-                <Nav navbar>
-                    <NavItem>
-                        <NavLink href="/">Library</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="/playlists">Playlists</NavLink>
-                    </NavItem>
-                </Nav>
-            </Navbar>
-            <Switch>
-                <Route path="/" exact
-                       render={() => (
-                           <Playlist songs={this.state.playlists[0].songs} name={this.state.playlists[0].name}/>
-                       )}/>
-                <Route path="/playlists" exact render={() => (<Playlists playlists={this.state.playlists}/>)}/>
-                <Route path="/playlists/:index" render={({match}) => (
-                    <Playlist songs={this.state.playlists[match.params.index].songs}
-                              name={this.state.playlists[match.params.index].name}/>
-                )}/>
-                <Redirect to="/"/>
-            </Switch>
+                <Navbar color="light" light expand="md">
+                    <NavbarBrand onClick={() => this.navigate('/')}>Reactify</NavbarBrand>
+                    <Nav navbar>
+                        <NavItem>
+                            <NavLink onClick={() => this.navigate('/')}>Library</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink onClick={() => this.navigate('/playlists')}>Playlists</NavLink>
+                        </NavItem>
+                    </Nav>
+                </Navbar>
+                <Switch>
+                    <Route path="/" exact
+                           render={() => (
+                               <Playlist songs={this.state.playlists[0].songs} name={this.state.playlists[0].name}/>
+                           )}/>
+                    <Route path="/playlists" exact render={() => (
+                        <Playlists playlists={this.state.playlists} choosePlaylist={this.choosePlaylist}/>)
+                    }/>
+                    <Route path="/playlists/:index" render={({match}) => (
+                        <Playlist songs={this.state.playlists[match.params.index].songs}
+                                  name={this.state.playlists[match.params.index].name}/>
+                    )}/>
+                    <Redirect to="/"/>
+                </Switch>
             </div>
         </Router>;
     }
