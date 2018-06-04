@@ -5,12 +5,16 @@ import PropTypes from "prop-types";
 
 class Player extends Component {
   render() {
-    const {currentSong} = this.props;
+    const {currentSong, playNext, playPrevious} = this.props;
 
-    return <audio controls>
-      <source src={`/resources/${currentSong.fileName}`} type="audio/mp3"/>
+    return <span>
+          <button onClick={playPrevious}>Previous</button>
+      <audio controls key={currentSong.fileName}>
+      <source src={`/resources/${currentSong.fileName}`} type="audio/mpeg"/>
       Your browser does not support the audio tag.
-    </audio>;
+    </audio>
+      <button onClick={playNext}>Next</button>
+    </span>;
   }
 }
 

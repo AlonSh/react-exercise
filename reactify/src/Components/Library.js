@@ -5,13 +5,14 @@ import Song from "./Song";
 
 class Library extends Component {
   render() {
-    const {songs} = this.props;
-    return <Playlist songs={songs}/>;
+    const {songs, chooseSong} = this.props;
+    return <Playlist songs={songs} chooseSong={chooseSong}/>;
   }
 }
 
 Library.propTypes = {
   songs: PropTypes.arrayOf(PropTypes.shape(Song.propTypes)),
+  chooseSong: PropTypes.func,
 };
 
 
