@@ -3,6 +3,8 @@ import {Nav, Navbar, NavbarBrand, NavItem, NavLink} from "reactstrap";
 import Player from "./Player";
 import Playlists from "./Playlists";
 import Playlist from "./Playlist";
+import {Switch} from "react-router";
+import {Redirect, Route, withRouter} from "react-router-dom";
 
 
 class Layout extends Component {
